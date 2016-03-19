@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:layout_weight="0.54">
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:elevation="8dp"
+            android:background="#1565c0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Polsek Sukolilo"
+                android:id="@+id/nama_tempat"
+                android:gravity="center"
+                android:textSize="25dp"
+                android:textColor="@color/cardview_light_background"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:id="@+id/contoh_peta"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/sukolilo_test"
+                android:scaleType="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="20dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="75dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Jl. Manyar Kertoadi 1 No.701, Klampis Ngasem, Sukolilo, Kota SBY, Jawa Timur, Indonesia"
+                    android:id="@+id/alamat_tempat"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="7dp"
+                android:elevation="12dp">
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/tombol_telpon"
+                    android:background="@drawable/phone"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="10dp"/>
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/tombol_arah"
+                    android:background="@drawable/route"
+                    android:layout_gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/tombol_cancel"
+                    android:background="@drawable/cancel"
+                    android:layout_gravity="start"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="10dp"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

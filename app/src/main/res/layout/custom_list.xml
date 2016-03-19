@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:paddingStart="20dp"
+        android:id="@+id/custom_listview">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Polsek Sukolilo"
+                android:id="@+id/nama_keamanan"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="30dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Jalan Arief Rahman Hakim"
+                android:id="@+id/alamat_singkat_keamanan"
+                android:layout_below="@+id/nama_keamanan"
+                android:layout_alignParentStart="true"
+                android:textSize="15dp"
+                android:textColor="@color/cardview_dark_background"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

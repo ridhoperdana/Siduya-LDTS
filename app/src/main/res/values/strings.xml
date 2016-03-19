@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Siduya</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_halaman_depan">HalamanDepan</string>
+    <string name="title_activity_halaman_keamanan">HalamanKeamanan</string>
+    <string name="transition_name_name">transition:coba</string>
+</resources>
