@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
@@ -35,13 +36,21 @@
             android:layout_width="match_parent"
             android:layout_height="300dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:id="@+id/contoh_peta"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/sukolilo_test"
-                android:scaleType="center"/>
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="300dp"-->
+                <!--android:id="@+id/contoh_peta"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:background="@drawable/sukolilo_test"-->
+                <!--android:scaleType="center"/>-->
+            <!--<fragment-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--class="net.ridhoperdana.siduya.MapFragment"-->
+                <!--android:id="@+id/fragmentMap"-->
+                <!--/>-->
+                <!--tools:context=".MapCurrentLocation"-->
+                <!--android:id="@+id/fragmentMap" />-->
         </LinearLayout>
 
         <LinearLayout

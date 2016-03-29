@@ -66,18 +66,6 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    // Insert a new item to the RecyclerView on a predefined position
-    public void insert(int position, Data data) {
-        list.add(position, data);
-        notifyItemInserted(position);
-    }
-
-    // Remove a RecyclerView item containing a specified Data object
-    public void remove(Data data) {
-        int position = list.indexOf(data);
-        list.remove(position);
-        notifyItemRemoved(position);
-    }
 
     private View.OnClickListener onClickListener(final int position) {
         return new View.OnClickListener() {
