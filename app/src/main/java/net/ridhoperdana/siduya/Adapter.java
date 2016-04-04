@@ -73,18 +73,18 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(v.getContext());
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.custom_dialog);
+                dialog.setContentView(R.layout.custom_detail);
 
 //                dialog.setTitle("Position " + position);
                 dialog.setCancelable(true); // dismiss when touching outside Dialog
-                button = (ImageView) dialog.findViewById(R.id.tombol_cancel);
-                button.setOnClickListener( new View.OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        dialog.dismiss();
-                    }
-                });
+//                button = (ImageView) dialog.findViewById(R.id.tombol_cancel);
+//                button.setOnClickListener( new View.OnClickListener()
+//                {
+//                    public void onClick(View v)
+//                    {
+//                        dialog.dismiss();
+//                    }
+//                });
                 // set the custom dialog components - texts and image
 //                TextView name = (TextView) dialog.findViewById(R.id.name);
 //                TextView job = (TextView) dialog.findViewById(R.id.job);

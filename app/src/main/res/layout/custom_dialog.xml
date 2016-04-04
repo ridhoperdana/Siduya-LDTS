@@ -67,6 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Jl. Manyar Kertoadi 1 No.701, Klampis Ngasem, Sukolilo, Kota SBY, Jawa Timur, Indonesia"
                     android:id="@+id/alamat_tempat"
                     android:textColor="@color/cardview_dark_background"

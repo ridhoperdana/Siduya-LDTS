@@ -27,6 +27,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class HalamanDepan extends Activity{
     private double longt;
     private Location loca;
     private Context mContext;
+    Button button;
 
     private Location mLastLocation;
 
@@ -93,15 +95,28 @@ public class HalamanDepan extends Activity{
 
         mContext = this;
 
-        getLocation();
-        try {
-            getAddress();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        getLocation();
+//        try {
+//            getAddress();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
-        lokasi_saya.setText(Alamat);
+        button = (Button)findViewById(R.id.button_location);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLocation();
+                try {
+                    getAddress();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+//        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
+//        lokasi_saya.setText(Alamat);
 
         cardKeamanan = (CardView) findViewById(R.id.card_keamanan);
 
@@ -165,6 +180,8 @@ public class HalamanDepan extends Activity{
 //        String country = addresses.get(0).getCountryName();
 //        String postalCode = addresses.get(0).getPostalCode();
 //        String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
+        lokasi_saya.setText(Alamat);
     }
 
 }
