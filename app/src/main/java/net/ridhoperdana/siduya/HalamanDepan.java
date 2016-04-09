@@ -89,7 +89,7 @@ public class HalamanDepan extends Activity{
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
+//        getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         setContentView(R.layout.activity_halaman_depan);
 
@@ -127,6 +127,8 @@ public class HalamanDepan extends Activity{
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         HalamanDepan.this, new Pair<View, String>(view.findViewById(R.id.card_keamanan), getString(R.string.transition_name_name))
                 );
+                intent.putExtra("Lat", lat);
+                intent.putExtra("Lng", longt);
                 ActivityCompat.startActivity(HalamanDepan.this, intent, options.toBundle());
             }
         });
@@ -173,6 +175,9 @@ public class HalamanDepan extends Activity{
         geocoder = new Geocoder(this, Locale.getDefault());
 
         addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+        lat = mLastLocation.getLatitude();
+        longt = mLastLocation.getLongitude();
 
         Alamat = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 //        String city = addresses.get(0).getLocality();

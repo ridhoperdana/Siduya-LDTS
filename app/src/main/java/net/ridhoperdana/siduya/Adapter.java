@@ -23,20 +23,26 @@ import java.util.List;
  */
 public class Adapter extends RecyclerView.Adapter<View_Holder> {
 
-    List<Data> list = Collections.emptyList();
+    List<Results> list = Collections.emptyList();
+//    List<Results> list = new ArrayList<>();
     Context context;
     TextView judul;
     TextView alamat;
     ImageView button;
+
+    HalamanKeamanan halamanKeamanan;
+
+//    List tampung_list = halamanKeamanan.tampung_result;
 //    Context contextHalamanKeamanan = null;
 //    private Activity activity;
 
 
-    public Adapter(List<Data> list, Context context) {
+    public Adapter(List<Results> list, Context context) {
         this.list = list;
         this.context = context;
 //        contextHalamanKeamanan = getApplicationContext();
 //        judul = (TextView)itemView.findViewById(R.id.person_name);
+//        Log.d("nama: ", list.get(0).getName());
     }
 
     @Override
@@ -50,10 +56,13 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
     public void onBindViewHolder(View_Holder holder, int position) {
 //        Log.d("log judul ----->>>> ",holder.isEmpty());
 //        System.console(list.get(position).nama);
-        holder.textview_nama.setText(list.get(position).nama);
-        holder.textview_alamat.setText(list.get(position).alamat);
-
-        holder.container.setOnClickListener(onClickListener(position));
+//        holder.textview_nama.setText(list.get(position).getResults().get(position).getName());
+//        holder.textview_alamat.setText(list.get(position).getResults().get(position).getName());
+        holder.textview_nama.setText(list.get(position).getName());
+        holder.textview_alamat.setText(list.get(position).getName());
+        Log.d("name: ", list.get(position).getName());
+        Log.d("alamat: ", list.get(position).getVicinity());
+        holder.container.setOnClickListener(onClickListener(holder, position));
     }
 
     @Override
@@ -67,7 +76,7 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
     }
 
 
-    private View.OnClickListener onClickListener(final int position) {
+    private View.OnClickListener onClickListener(final View_Holder holder, final int position) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,8 +95,10 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
 //                    }
 //                });
                 // set the custom dialog components - texts and image
-//                TextView name = (TextView) dialog.findViewById(R.id.name);
-//                TextView job = (TextView) dialog.findViewById(R.id.job);
+                TextView name = (TextView) dialog.findViewById(R.id.nama_tempat);
+                name.setText(list.get(position).getName());
+                TextView address = (TextView) dialog.findViewById(R.id.alamat_tempat);
+                address.setText(list.get(position).getVicinity());
 //                ImageView icon = (ImageView) dialog.findViewById(R.id.image);
 
 //                setDataToView(name, job, icon, position);
