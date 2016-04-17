@@ -31,29 +31,18 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<View_Holder> {
 
     List<Results> list = Collections.emptyList();
-//    List<Results> list = new ArrayList<>();
     Context context;
     TextView judul;
     TextView alamat;
     ImageView button;
-    private net.ridhoperdana.siduya.MapFragment map;
     private GoogleMap maps;
-//    private Context context;
     Fragment mFragment;
 
     HalamanKeamanan halamanKeamanan;
 
-//    List tampung_list = halamanKeamanan.tampung_result;
-//    Context contextHalamanKeamanan = null;
-//    private Activity activity;
-
-
     public Adapter(List<Results> list, Context context) {
         this.list = list;
         this.context = context;
-//        contextHalamanKeamanan = getApplicationContext();
-//        judul = (TextView)itemView.findViewById(R.id.person_name);
-//        Log.d("nama: ", list.get(0).getName());
     }
 
     @Override
@@ -65,10 +54,6 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
 
     @Override
     public void onBindViewHolder(View_Holder holder, int position) {
-//        Log.d("log judul ----->>>> ",holder.isEmpty());
-//        System.console(list.get(position).nama);
-//        holder.textview_nama.setText(list.get(position).getResults().get(position).getName());
-//        holder.textview_alamat.setText(list.get(position).getResults().get(position).getName());
         holder.textview_nama.setText(list.get(position).getName());
         holder.textview_alamat.setText(list.get(position).getVicinity());
         holder.container.setOnClickListener(onClickListener(holder, position));
@@ -101,32 +86,6 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
                 i.putExtra("value_nama", nama);
                 i.putExtra("value_alamat", alamat);
                 context.startActivity(i);
-//                if(context instanceof DialogActivity) {
-////                    Log.d("masuk gan", "sip");
-//                    ((DialogActivity)v.getContext()).coba_lokasi("pass", bundle_peta);
-//                }
-//                map = holder.ma
-//                maps = ((net.ridhoperdana.siduya.MapFragment)holder).getFragmentManager().findFragmentById(R.id.map);
-//                dialog.setTitle("Position " + position);
-//                dialog.setCancelable(true); // dismiss when touching outside Dialog
-//                button = (ImageView) dialog.findViewById(R.id.tombol_cancel);
-//                button.setOnClickListener( new View.OnClickListener()
-//                {
-//                    public void onClick(View v)
-//                    {
-//                        dialog.dismiss();
-//                    }
-//                });
-                // set the custom dialog components - texts and image
-//                TextView name = (TextView) dialog.findViewById(R.id.nama_tempat);
-//                name.setText(list.get(position).getName());
-//                TextView address = (TextView) dialog.findViewById(R.id.alamat_tempat);
-//                address.setText(list.get(position).getVicinity());
-//                ImageView icon = (ImageView) dialog.findViewById(R.id.image);
-
-//                setDataToView(name, job, icon, position);
-
-//                dialog.show();
             }
         };
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -64,6 +65,7 @@ public class HalamanKeamanan extends FragmentActivity {
     public Double longt_depan;
     public StringBuilder url;
     private GoogleMap map;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,8 @@ public class HalamanKeamanan extends FragmentActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.activity_halaman_keamanan);
+
+        dialog = new ProgressDialog(this);
 
         lat_depan = getIntent().getDoubleExtra("Lat", 1);
         longt_depan = getIntent().getDoubleExtra("Lng", 1);
@@ -220,36 +224,15 @@ public class HalamanKeamanan extends FragmentActivity {
             Adapter adapter = new Adapter(tampung_result, HalamanKeamanan.this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(HalamanKeamanan.this));
+            dialog.hide();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Sedang mengunduh data...");
+            dialog.setCancelable(false);
+            dialog.show();
         }
     }
-
-    public void coba_lokasi(String judul, Bundle bundle)
-    {
-        switch(judul)
-        {
-            case "pass":
-                Log.d("masuk gan", "sip");
-                MapFragment lokasi_peta = new MapFragment();
-//                com.google.android.gms.maps.MapFragment
-//                net.ridhoperdana.siduya.MapFragment lokasi_peta = new net.ridhoperdana.siduya.MapFragment();
-
-                lokasi_peta.setArguments(bundle);
-//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                fragmentTransaction.commit();
-
-                /*com.google.android.gms.maps.MapFragment mMapFragment = (MapFragment) mFragmentManager.findFragmentByTag("map");
-                if (mMapFragment == null) {
-                    mMapFragment = new MapFragment();
-                    mMapFragment.setArguments(intentToFragmentArguments(getIntent()));
-
-                    mFragmentManager.beginTransaction()
-                            .add(R.id.fragment_container_map, mMapFragment, "map")
-                            .commit();
-                }*/
-                break;
-        }
-    }
-
-
-
 }

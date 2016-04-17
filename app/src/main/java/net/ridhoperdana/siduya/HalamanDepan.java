@@ -89,18 +89,11 @@ public class HalamanDepan extends Activity{
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         setContentView(R.layout.activity_halaman_depan);
 
         mContext = this;
-
-//        getLocation();
-//        try {
-//            getAddress();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         button = (Button)findViewById(R.id.button_location);
         button.setOnClickListener(new View.OnClickListener() {
@@ -115,11 +108,7 @@ public class HalamanDepan extends Activity{
             }
         });
 
-//        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
-//        lokasi_saya.setText(Alamat);
-
         cardKeamanan = (CardView) findViewById(R.id.card_keamanan);
-
         cardKeamanan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,7 +123,6 @@ public class HalamanDepan extends Activity{
         });
 
         cardKesehatan = (CardView) findViewById(R.id.card_kesehatan);
-
         cardKesehatan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +133,20 @@ public class HalamanDepan extends Activity{
                 intent_kesehatan.putExtra("Lat", lat);
                 intent_kesehatan.putExtra("Lng", longt);
                 ActivityCompat.startActivity(HalamanDepan.this, intent_kesehatan, options.toBundle());
+            }
+        });
+
+        cardTransportasi = (CardView)findViewById(R.id.card_transportasi);
+        cardTransportasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_transportasi = new Intent(HalamanDepan.this, HalamanTransportasi.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_transportasi), getString(R.string.transition_name_name))
+                );
+                intent_transportasi.putExtra("Lat", lat);
+                intent_transportasi.putExtra("Lng", longt);
+                ActivityCompat.startActivity(HalamanDepan.this, intent_transportasi, options.toBundle());
             }
         });
     }

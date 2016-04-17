@@ -27,7 +27,6 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
-                class="net.ridhoperdana.siduya.MapFragment"
                 android:id="@+id/fragmentMap" />
         </LinearLayout>
 

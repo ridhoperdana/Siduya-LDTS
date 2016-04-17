@@ -28,16 +28,14 @@
         <activity
             android:name=".HalamanKeamanan"
             android:label="@string/title_activity_halaman_keamanan"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".HalamanKesehatan"
             android:label="@string/title_activity_halaman_kesehatan"
-            android:theme="@style/AppTheme"></activity>
-
-        <activity android:name=".DialogActivity"
-            android:theme="@style/Theme.MyDialog"></activity>
-
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DialogActivity"
+            android:theme="@style/Theme.MyDialog" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -45,6 +43,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBVuRYeAWRZhzeF9c51pOUfAC93iP7FgBE" />
+
+        <activity android:name=".HalamanTransportasi" />
+        <activity android:name=".InputData"></activity>
     </application>
 
 </manifest>
