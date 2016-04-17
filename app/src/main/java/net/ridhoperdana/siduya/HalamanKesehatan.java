@@ -1,32 +1,18 @@
 package net.ridhoperdana.siduya;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.MapFragment;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,8 +21,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,26 +28,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-import javax.xml.transform.Result;
+public class HalamanKesehatan extends AppCompatActivity {
 
-public class HalamanKeamanan extends FragmentActivity {
-
-    static InputStream is = null;
-    static JSONObject jObj = null;
-    static String json = "";
     public List<Results> tampung_result = new ArrayList<>();
     Tempat request;
     public Double lat_depan;
     public Double longt_depan;
     public StringBuilder url;
-    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +46,7 @@ public class HalamanKeamanan extends FragmentActivity {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-        setContentView(R.layout.activity_halaman_keamanan);
+        setContentView(R.layout.activity_halaman_kesehatan);
 
         lat_depan = getIntent().getDoubleExtra("Lat", 1);
         longt_depan = getIntent().getDoubleExtra("Lng", 1);
@@ -80,43 +54,11 @@ public class HalamanKeamanan extends FragmentActivity {
         url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         url.append("location=" + lat_depan + "," + longt_depan);
         url.append("&radius=" + 5000);
-        url.append("&types=" + "police");
+        url.append("&types=" + "hospital");
         url.append("&rankBy=" + "distance");
         url.append("&key=" + "AIzaSyBVuRYeAWRZhzeF9c51pOUfAC93iP7FgBE");
 
         new Async().execute(url.toString());
-
-//        Log.d("data: ", tampung_result.get(1).getName());
-
-//        recyclerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final Dialog dialog = new Dialog(HalamanKeamanan.this);
-//
-//                //setting custom layout to dialog
-//                dialog.setContentView(R.layout.custom_dialog);
-////                dialog.setTitle("Custom Dialog");
-//
-//                //adding text dynamically
-////                TextView txt = (TextView) dialog.findViewById(R.id.textView);
-////                txt.setText("Put your dialog text here.");
-//
-////                ImageView image = (ImageView)dialog.findViewById(R.id.image);
-////                image.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
-//
-//                //adding button click event
-////                Button dismissButton = (Button) dialog.findViewById(R.id.button);
-//                ImageView image = (ImageView)dialog.findViewById(R.id.tombol_cancel);
-//                image.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
-//
-//            }
-//        });
 
     }
 
@@ -137,7 +79,7 @@ public class HalamanKeamanan extends FragmentActivity {
             for(int i=0; i<request.getResults().size(); i++)
             {
                 tampung_result.add(request.getResults().get(i));
-//                Log.d("List Nama->", tampung_result.get(i).getName());
+                Log.d("List Nama->", tampung_result.get(i).getName());
             }
 
         } catch (UnsupportedEncodingException e) {
@@ -216,40 +158,11 @@ public class HalamanKeamanan extends FragmentActivity {
         @Override
         protected void onPostExecute(Double aDouble) {
             super.onPostExecute(aDouble);
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv);
-            Adapter adapter = new Adapter(tampung_result, HalamanKeamanan.this);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(HalamanKeamanan.this));
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_kesehatan);
+            Adapter adapter_kesehatan = new Adapter(tampung_result, getApplication());
+            recyclerView.setAdapter(adapter_kesehatan);
+            recyclerView.setLayoutManager(new LinearLayoutManager(HalamanKesehatan.this));
         }
     }
-
-    public void coba_lokasi(String judul, Bundle bundle)
-    {
-        switch(judul)
-        {
-            case "pass":
-                Log.d("masuk gan", "sip");
-                MapFragment lokasi_peta = new MapFragment();
-//                com.google.android.gms.maps.MapFragment
-//                net.ridhoperdana.siduya.MapFragment lokasi_peta = new net.ridhoperdana.siduya.MapFragment();
-
-                lokasi_peta.setArguments(bundle);
-//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                fragmentTransaction.commit();
-
-                /*com.google.android.gms.maps.MapFragment mMapFragment = (MapFragment) mFragmentManager.findFragmentByTag("map");
-                if (mMapFragment == null) {
-                    mMapFragment = new MapFragment();
-                    mMapFragment.setArguments(intentToFragmentArguments(getIntent()));
-
-                    mFragmentManager.beginTransaction()
-                            .add(R.id.fragment_container_map, mMapFragment, "map")
-                            .commit();
-                }*/
-                break;
-        }
-    }
-
-
 
 }

@@ -132,6 +132,21 @@ public class HalamanDepan extends Activity{
                 ActivityCompat.startActivity(HalamanDepan.this, intent, options.toBundle());
             }
         });
+
+        cardKesehatan = (CardView) findViewById(R.id.card_kesehatan);
+
+        cardKesehatan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_kesehatan = new Intent(HalamanDepan.this, HalamanKesehatan.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_kesehatan), getString(R.string.transition_name_name))
+                );
+                intent_kesehatan.putExtra("Lat", lat);
+                intent_kesehatan.putExtra("Lng", longt);
+                ActivityCompat.startActivity(HalamanDepan.this, intent_kesehatan, options.toBundle());
+            }
+        });
     }
 
     private void getLocation()

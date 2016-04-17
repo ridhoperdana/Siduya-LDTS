@@ -124,7 +124,8 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="15dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp">
+                        android:layout_marginRight="20dp"
+                        android:id="@+id/card_kesehatan">
 
                         <FrameLayout
                             android:orientation="horizontal"
@@ -164,7 +165,8 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="15dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp">
+                        android:layout_marginRight="20dp"
+                        android:id="@+id/card_transportasi">
 
                         <FrameLayout
                             android:orientation="horizontal"

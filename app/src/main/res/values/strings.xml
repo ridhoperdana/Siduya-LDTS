@@ -9,4 +9,5 @@
     <string name="title_activity_halaman_keamanan">HalamanKeamanan</string>
     <string name="transition_name_name">transition:coba</string>
     <string name="google_app_id">strange-song-123323</string>
+    <string name="title_activity_halaman_kesehatan">HalamanKesehatan</string>
 </resources>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.ridhoperdana.siduya">
+
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -26,18 +27,24 @@
         </activity>
         <activity
             android:name=".HalamanKeamanan"
-            android:label="@string/title_activity_halaman_keamanan">
-            <!--android:theme="@style/AppTheme">-->
+            android:label="@string/title_activity_halaman_keamanan"
+            android:theme="@style/AppTheme"></activity>
 
-        </activity>
+        <activity
+            android:name=".HalamanKesehatan"
+            android:label="@string/title_activity_halaman_kesehatan"
+            android:theme="@style/AppTheme"></activity>
+
+        <activity android:name=".DialogActivity"
+            android:theme="@style/Theme.MyDialog"></activity>
+
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBVuRYeAWRZhzeF9c51pOUfAC93iP7FgBE"/>
-
+            android:value="AIzaSyBVuRYeAWRZhzeF9c51pOUfAC93iP7FgBE" />
     </application>
 
 </manifest>
