@@ -16,7 +16,7 @@ public class Database {
     @SerializedName("namalayanan")
     private String namalayanan;
 
-    @SerializedName("notelpon")
+    @SerializedName("nomortelpon")
     private String notelpon;
 
     @SerializedName("latitude")
