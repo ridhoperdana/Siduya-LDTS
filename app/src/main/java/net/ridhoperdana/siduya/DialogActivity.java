@@ -81,6 +81,7 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
     private Double lat, longt;
     DatabaseTelpon[] request;
     public LatLngBounds AUSTRALIA;
+    private String kategori;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
         longt = getIntent().getDoubleExtra("value_longt", 1);
         nama = getIntent().getExtras().getString("value_nama");
         alamat = getIntent().getExtras().getString("value_alamat");
+        kategori = getIntent().getExtras().getString("value_kategori");
 
         try {
             namautf = URLEncoder.encode(nama, "UTF-8").replace("+", "%20");
@@ -181,6 +183,7 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
                     intent_inputdata.putExtra("value_alamat", alamatutf);
                     intent_inputdata.putExtra("value_lat", lat);
                     intent_inputdata.putExtra("value_longt", longt);
+                    intent_inputdata.putExtra("value_kategori", kategori);
 
                     startActivity(intent_inputdata);
                 }

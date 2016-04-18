@@ -66,6 +66,7 @@ public class HalamanKeamanan extends FragmentActivity {
     public StringBuilder url;
     private GoogleMap map;
     private ProgressDialog dialog;
+    private String kategori;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public class HalamanKeamanan extends FragmentActivity {
 
         lat_depan = getIntent().getDoubleExtra("Lat", 1);
         longt_depan = getIntent().getDoubleExtra("Lng", 1);
+        kategori = getIntent().getStringExtra("kategori");
 
         url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         url.append("location=" + lat_depan + "," + longt_depan);
@@ -221,7 +223,7 @@ public class HalamanKeamanan extends FragmentActivity {
         protected void onPostExecute(Double aDouble) {
             super.onPostExecute(aDouble);
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv);
-            Adapter adapter = new Adapter(tampung_result, HalamanKeamanan.this);
+            Adapter adapter = new Adapter(tampung_result, HalamanKeamanan.this, kategori);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(HalamanKeamanan.this));
             dialog.hide();

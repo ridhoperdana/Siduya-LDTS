@@ -79,6 +79,7 @@ public class HalamanDepan extends Activity{
     List<Address> addresses;
 
     String Alamat;
+    public String kategori;
 
 //    CurrentAddress curr = new CurrentAddress();
 
@@ -116,8 +117,11 @@ public class HalamanDepan extends Activity{
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         HalamanDepan.this, new Pair<View, String>(view.findViewById(R.id.card_keamanan), getString(R.string.transition_name_name))
                 );
+
+                kategori = "Keamanan";
                 intent.putExtra("Lat", lat);
                 intent.putExtra("Lng", longt);
+                intent.putExtra("kategori", kategori);
                 ActivityCompat.startActivity(HalamanDepan.this, intent, options.toBundle());
             }
         });
@@ -130,8 +134,11 @@ public class HalamanDepan extends Activity{
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_kesehatan), getString(R.string.transition_name_name))
                 );
+
+                kategori = "Kesehatan";
                 intent_kesehatan.putExtra("Lat", lat);
                 intent_kesehatan.putExtra("Lng", longt);
+                intent_kesehatan.putExtra("kategori", kategori);
                 ActivityCompat.startActivity(HalamanDepan.this, intent_kesehatan, options.toBundle());
             }
         });
@@ -144,8 +151,11 @@ public class HalamanDepan extends Activity{
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_transportasi), getString(R.string.transition_name_name))
                 );
+
+                kategori = "Transportasi";
                 intent_transportasi.putExtra("Lat", lat);
                 intent_transportasi.putExtra("Lng", longt);
+                intent_transportasi.putExtra("kategori", kategori);
                 ActivityCompat.startActivity(HalamanDepan.this, intent_transportasi, options.toBundle());
             }
         });

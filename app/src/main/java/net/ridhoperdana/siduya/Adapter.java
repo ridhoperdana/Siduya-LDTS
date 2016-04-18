@@ -39,10 +39,12 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
     Fragment mFragment;
 
     HalamanKeamanan halamanKeamanan;
+    private String kategori;
 
-    public Adapter(List<Results> list, Context context) {
+    public Adapter(List<Results> list, Context context, String kategori) {
         this.list = list;
         this.context = context;
+        this.kategori = kategori;
     }
 
     @Override
@@ -85,6 +87,7 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
                 i.putExtra("value_longt", longt);
                 i.putExtra("value_nama", nama);
                 i.putExtra("value_alamat", alamat);
+                i.putExtra("value_kategori", kategori);
                 context.startActivity(i);
             }
         };

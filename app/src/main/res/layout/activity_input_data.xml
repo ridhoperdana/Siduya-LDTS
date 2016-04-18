@@ -104,6 +104,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Kategori Tempat"
+                    android:id="@+id/input_kategori_alamat_tempat"
+                    android:textColor="@color/cardview_dark_background"
+                    android:layout_marginBottom="10dp"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Kategori.."
+                    android:textColorHint="@color/cardview_dark_background"
+                    android:editable="false"
+                    android:id="@+id/input_kategori_tempat"
+                    android:textColor="@color/cardview_dark_background"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Nomor Telepon"
                     android:id="@+id/input_judul_nomor_tempat"
                     android:textColor="@color/cardview_dark_background"
@@ -131,7 +154,6 @@
             android:background="@color/colorAccent"
             android:padding="10dp"
             android:layout_margin="10dp"/>
-
 
     </LinearLayout>
 

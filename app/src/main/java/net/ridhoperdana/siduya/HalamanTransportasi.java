@@ -34,6 +34,7 @@ public class HalamanTransportasi extends AppCompatActivity {
     public StringBuilder url;
     private String url_baru, latutf, longtutf, radiusutf, distance, key;
     private ProgressDialog dialog;
+    private String kategori;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class HalamanTransportasi extends AppCompatActivity {
 
         lat_depan = getIntent().getDoubleExtra("Lat", 1);
         longt_depan = getIntent().getDoubleExtra("Lng", 1);
+        kategori = getIntent().getStringExtra("kategori");
 
         try {
             url_baru = URLEncoder.encode("taxi_stand|train_station", "UTF-8");
@@ -112,7 +114,7 @@ public class HalamanTransportasi extends AppCompatActivity {
         protected void onPostExecute(Double aDouble) {
             super.onPostExecute(aDouble);
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_transportasi);
-            Adapter adapter_kesehatan = new Adapter(tampung_result, getApplication());
+            Adapter adapter_kesehatan = new Adapter(tampung_result, getApplication(), kategori);
             recyclerView.setAdapter(adapter_kesehatan);
             recyclerView.setLayoutManager(new LinearLayoutManager(HalamanTransportasi.this));
             dialog.hide();
