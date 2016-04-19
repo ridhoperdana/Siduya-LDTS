@@ -192,7 +192,13 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
 
     }
 
-//    private void getLocation()
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Async().execute(url_telepon);
+    }
+
+    //    private void getLocation()
 //    {
 //        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
 //

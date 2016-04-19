@@ -60,9 +60,9 @@ public class InputData extends AppCompatActivity {
 
         try {
             namautf = URLDecoder.decode(nama, "UTF-8");
-            namautfpersen = URLEncoder.encode(namautf, "UTF-8").replace("+", "%20");
+            namautfpersen = URLEncoder.encode(namautf, "UTF-8").replace("+", " ");
             alamatutf = URLDecoder.decode(alamat, "UTF-8");
-            alamatutfpersen = URLEncoder.encode(alamatutf, "UTF-8").replace("+", "%20");
+            alamatutfpersen = URLEncoder.encode(alamatutf, "UTF-8").replace("+", " ");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -82,16 +82,22 @@ public class InputData extends AppCompatActivity {
 
         tombol = (Button)findViewById(R.id.tombol_unggah);
 
+//        tombol.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new Async().execute("http://ldts.cangkruk.info/public/uploaddata/"
+//                        + kategori_tempat.getText().toString() + "/"
+//                        + namautfpersen + "/"
+//                        + alamatutfpersen + "/"
+//                        + nomor_tempat.getText().toString() + "/"
+//                        + latitude.toString() + "/"
+//                        + longitude.toString());
+//            }
+//        });
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Async().execute("http://ldts.cangkruk.info/public/uploaddata/"
-                        + kategori_tempat.getText().toString() + "/"
-                        + namautfpersen + "/"
-                        + alamatutfpersen + "/"
-                        + nomor_tempat.getText().toString() + "/"
-                        + latitude.toString() + "/"
-                        + longitude.toString());
+                new Async().execute("http://ldts.cangkruk.info/public/uploaddata");
             }
         });
     }
@@ -107,8 +113,8 @@ public class InputData extends AppCompatActivity {
 
             postParameters = new ArrayList<NameValuePair>();
             postParameters.add(new BasicNameValuePair("kategori", kategori_tempat.getText().toString()));
-            postParameters.add(new BasicNameValuePair("namalayanan", namautfpersen));
-            postParameters.add(new BasicNameValuePair("alamat", alamatutfpersen));
+            postParameters.add(new BasicNameValuePair("namalayanan", namautf));
+            postParameters.add(new BasicNameValuePair("alamat", alamatutf));
             postParameters.add(new BasicNameValuePair("notelpon", nomor_tempat.getText().toString()));
             postParameters.add(new BasicNameValuePair("lat", latitude.toString()));
             postParameters.add(new BasicNameValuePair("longitude", longitude.toString()));
@@ -194,9 +200,10 @@ public class InputData extends AppCompatActivity {
 //            recyclerView.setAdapter(adapter_kesehatan);
 //            recyclerView.setLayoutManager(new LinearLayoutManager(HalamanKesehatan.this));
             dialog.hide();
-            if(responsecode=="sukses")
+            if(responsecode.equals("upload sukses"))
             {
                 Toast.makeText(getApplicationContext(), "Berhasil menambahkan data telepon", Toast.LENGTH_SHORT).show();
+                finish();
             }
             else
                 Toast.makeText(getApplicationContext(), "Gagal menambahkan data telepon", Toast.LENGTH_SHORT).show();
