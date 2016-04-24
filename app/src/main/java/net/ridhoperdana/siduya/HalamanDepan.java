@@ -29,6 +29,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,6 +51,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
@@ -102,6 +105,9 @@ public class HalamanDepan extends Activity{
     private AutoCompleteTextView auto;
     private ProgressDialog dialog;
 
+    private Double lat_search, long_search;
+    private int flag=0;
+
 //    CurrentAddress curr = new CurrentAddress();
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -117,8 +123,12 @@ public class HalamanDepan extends Activity{
 
         mContext = this;
 
-        dialog = new ProgressDialog(this);
 
+        dialog = new ProgressDialog(this);
+        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
+        cardKeamanan = (CardView) findViewById(R.id.card_keamanan);
+        cardKesehatan = (CardView) findViewById(R.id.card_kesehatan);
+        cardTransportasi = (CardView)findViewById(R.id.card_transportasi);
 //        button = (Button)findViewById(R.id.button_location);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -136,9 +146,27 @@ public class HalamanDepan extends Activity{
 
         auto = (AutoCompleteTextView)findViewById(R.id.input_cari);
         auto.setAdapter(new PlaceAdapter(this, R.layout.autocomplete));
+        auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String description = (String) parent.getItemAtPosition(position);
+                getLocationFromAddress(getApplicationContext(), description);
+                lokasi_saya.setText(description.substring(0, 15));
+                lokasi_saya = new TextView(getApplicationContext());
+                flag = 1;
+                Log.d("masuk sini", "onitemclick");
+                lat = lat_search;
+                longt = long_search;
+            }
+        });
+//        SendIntent(flag);
+//        Log.d("flag-->", String.valueOf(flag));
+        SendNewIntent();
+    }
 
-
-        cardKeamanan = (CardView) findViewById(R.id.card_keamanan);
+    private void SendNewIntent()
+    {
+        Log.d("masuk flag", "-->0");
         cardKeamanan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,8 +182,6 @@ public class HalamanDepan extends Activity{
                 ActivityCompat.startActivity(HalamanDepan.this, intent, options.toBundle());
             }
         });
-
-        cardKesehatan = (CardView) findViewById(R.id.card_kesehatan);
         cardKesehatan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,8 +197,6 @@ public class HalamanDepan extends Activity{
                 ActivityCompat.startActivity(HalamanDepan.this, intent_kesehatan, options.toBundle());
             }
         });
-
-        cardTransportasi = (CardView)findViewById(R.id.card_transportasi);
         cardTransportasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,8 +213,107 @@ public class HalamanDepan extends Activity{
             }
         });
     }
+    private void SendIntent(int flag)
+    {
+        if(flag==0)
+        {
+            Log.d("masuk flag", "-->0");
+            cardKeamanan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(HalamanDepan.this, HalamanKeamanan.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            HalamanDepan.this, new Pair<View, String>(view.findViewById(R.id.card_keamanan), getString(R.string.transition_name_name))
+                    );
 
+                    kategori = "Keamanan";
+                    intent.putExtra("Lat", lat);
+                    intent.putExtra("Lng", longt);
+                    intent.putExtra("kategori", kategori);
+                    ActivityCompat.startActivity(HalamanDepan.this, intent, options.toBundle());
+                }
+            });
+            cardKesehatan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent_kesehatan = new Intent(HalamanDepan.this, HalamanKesehatan.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_kesehatan), getString(R.string.transition_name_name))
+                    );
 
+                    kategori = "Kesehatan";
+                    intent_kesehatan.putExtra("Lat", lat);
+                    intent_kesehatan.putExtra("Lng", longt);
+                    intent_kesehatan.putExtra("kategori", kategori);
+                    ActivityCompat.startActivity(HalamanDepan.this, intent_kesehatan, options.toBundle());
+                }
+            });
+            cardTransportasi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent_transportasi = new Intent(HalamanDepan.this, HalamanTransportasi.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_transportasi), getString(R.string.transition_name_name))
+                    );
+
+                    kategori = "Transportasi";
+                    intent_transportasi.putExtra("Lat", lat);
+                    intent_transportasi.putExtra("Lng", longt);
+                    intent_transportasi.putExtra("kategori", kategori);
+                    ActivityCompat.startActivity(HalamanDepan.this, intent_transportasi, options.toBundle());
+                }
+            });
+        }
+        else
+        {
+            Log.d("masuk flag", "-->1");
+            cardKeamanan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(HalamanDepan.this, HalamanKeamanan.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            HalamanDepan.this, new Pair<View, String>(view.findViewById(R.id.card_keamanan), getString(R.string.transition_name_name))
+                    );
+
+                    kategori = "Keamanan";
+                    intent.putExtra("Lat", lat_search);
+                    intent.putExtra("Lng", long_search);
+                    intent.putExtra("kategori", kategori);
+                    ActivityCompat.startActivity(HalamanDepan.this, intent, options.toBundle());
+                }
+            });
+            cardKesehatan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent_kesehatan = new Intent(HalamanDepan.this, HalamanKesehatan.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_kesehatan), getString(R.string.transition_name_name))
+                    );
+
+                    kategori = "Kesehatan";
+                    intent_kesehatan.putExtra("Lat", lat_search);
+                    intent_kesehatan.putExtra("Lng", long_search);
+                    intent_kesehatan.putExtra("kategori", kategori);
+                    ActivityCompat.startActivity(HalamanDepan.this, intent_kesehatan, options.toBundle());
+                }
+            });
+            cardTransportasi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent_transportasi = new Intent(HalamanDepan.this, HalamanTransportasi.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            HalamanDepan.this, new Pair<View, String>(v.findViewById(R.id.card_transportasi), getString(R.string.transition_name_name))
+                    );
+
+                    kategori = "Transportasi";
+                    intent_transportasi.putExtra("Lat", lat_search);
+                    intent_transportasi.putExtra("Lng", long_search);
+                    intent_transportasi.putExtra("kategori", kategori);
+                    ActivityCompat.startActivity(HalamanDepan.this, intent_transportasi, options.toBundle());
+                }
+            });
+        }
+    }
 
     private void getLocation()
     {
@@ -265,7 +388,7 @@ public class HalamanDepan extends Activity{
         @Override
         protected void onPostExecute(Double aDouble) {
             super.onPostExecute(aDouble);
-            lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
+
             lokasi_saya.setText(Alamat);
             dialog.hide();
         }
@@ -308,4 +431,27 @@ public class HalamanDepan extends Activity{
         }
     }
 
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            lat_search = location.getLatitude();
+            long_search = location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+        }
+        return p1;
+    }
 }

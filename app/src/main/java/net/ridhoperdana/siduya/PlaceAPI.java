@@ -27,7 +27,7 @@ public class PlaceAPI {
 
     net.ridhoperdana.siduya.Address request;
     public List<Predictions> tampung_result = new ArrayList<>();
-    public ArrayList<String> resultList = new ArrayList<>();
+    public ArrayList<String> resultList;
     private StringBuilder url;
 
     public ArrayList<String> autocomplete(String input) {
@@ -51,11 +51,12 @@ public class PlaceAPI {
             request = baru.fromJson(reader, net.ridhoperdana.siduya.Address.class);
 //            Log.d("list->", request.)
 
+            resultList = new ArrayList<String>(request.getPredictions().size());
             for(int i=0; i<request.getPredictions().size(); i++)
             {
 //                tampung_result.add(request.getPredictions().get(i));
                 resultList.add(request.getPredictions().get(i).getDescription());
-                Log.d("List Predict->", request.getPredictions().get(i).getDescription().toString());
+//                Log.d("List Predict->", request.getPredictions().get(i).getDescription().toString());
             }
 
         } catch (UnsupportedEncodingException e) {

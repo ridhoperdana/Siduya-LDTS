@@ -58,6 +58,7 @@ public class PlaceAdapter extends ArrayAdapter<String> implements Filterable{
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
+//                resultList = new ArrayList<String>()
                 if (constraint != null) {
                     resultList = mPlaceAPI.autocomplete(constraint.toString());
 //                    Log.d("result list->", resultList.toString());

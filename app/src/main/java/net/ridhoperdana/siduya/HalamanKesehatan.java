@@ -60,7 +60,7 @@ public class HalamanKesehatan extends AppCompatActivity {
         kategori = getIntent().getStringExtra("kategori");
 
         try {
-            url_baru = URLEncoder.encode("hospital|doctor", "UTF-8");
+            url_baru = URLEncoder.encode("hospital", "UTF-8");
             latutf = URLEncoder.encode(lat_depan.toString(), "UTF-8");
             longtutf = URLEncoder.encode(longt_depan.toString(), "UTF-8");
             radiusutf = URLEncoder.encode("5000", "UTF-8");
