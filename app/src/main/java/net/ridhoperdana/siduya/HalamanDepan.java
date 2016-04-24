@@ -3,6 +3,7 @@ package net.ridhoperdana.siduya;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
@@ -25,8 +27,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,12 +49,21 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
+import com.google.gson.Gson;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Text;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -70,6 +85,10 @@ public class HalamanDepan extends Activity{
     private Location loca;
     private Context mContext;
     Button button;
+    public List<Results> tampung_result = new ArrayList<>();
+    Tempat request;
+
+
 
     private Location mLastLocation;
 
@@ -80,6 +99,8 @@ public class HalamanDepan extends Activity{
 
     String Alamat;
     public String kategori;
+    private AutoCompleteTextView auto;
+    private ProgressDialog dialog;
 
 //    CurrentAddress curr = new CurrentAddress();
 
@@ -96,18 +117,26 @@ public class HalamanDepan extends Activity{
 
         mContext = this;
 
-        button = (Button)findViewById(R.id.button_location);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getLocation();
-                try {
-                    getAddress();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        dialog = new ProgressDialog(this);
+
+//        button = (Button)findViewById(R.id.button_location);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getLocation();
+//                try {
+//                    getAddress();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+        new Async().execute("go");
+
+        auto = (AutoCompleteTextView)findViewById(R.id.input_cari);
+        auto.setAdapter(new PlaceAdapter(this, R.layout.autocomplete));
+
 
         cardKeamanan = (CardView) findViewById(R.id.card_keamanan);
         cardKeamanan.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +190,8 @@ public class HalamanDepan extends Activity{
         });
     }
 
+
+
     private void getLocation()
     {
         manager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -212,8 +243,69 @@ public class HalamanDepan extends Activity{
 //        String country = addresses.get(0).getCountryName();
 //        String postalCode = addresses.get(0).getPostalCode();
 //        String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
-        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
-        lokasi_saya.setText(Alamat);
+//        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
+//        lokasi_saya.setText(Alamat);
+    }
+
+    private class Async extends AsyncTask<String, Integer, Double>
+    {
+
+        @Override
+        protected Double doInBackground(String... params) {
+//            return null;
+            getLocation();
+            try {
+                getAddress();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Double aDouble) {
+            super.onPostExecute(aDouble);
+            lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
+            lokasi_saya.setText(Alamat);
+            dialog.hide();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Sedang mencari lokasi...");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+    }
+
+    public void getJSONFromUrl(String url) {
+
+        // Making HTTP request
+        try {
+            // defaultHttpClient
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(url);
+
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            Reader reader = new InputStreamReader(httpResponse.getEntity().getContent(), "UTF-8");
+            Gson baru = new Gson();
+            request = baru.fromJson(reader, Tempat.class);
+//            Log.d("list->", request.)
+
+            for(int i=0; i<request.getResults().size(); i++)
+            {
+                tampung_result.add(request.getResults().get(i));
+//                Log.d("List Nama->", tampung_result.get(i).getName());
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
