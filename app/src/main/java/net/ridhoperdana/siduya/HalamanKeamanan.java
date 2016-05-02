@@ -91,39 +91,6 @@ public class HalamanKeamanan extends FragmentActivity {
         url.append("&key=" + "AIzaSyBVuRYeAWRZhzeF9c51pOUfAC93iP7FgBE");
 
         new Async().execute(url.toString());
-
-//        Log.d("data: ", tampung_result.get(1).getName());
-
-//        recyclerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final Dialog dialog = new Dialog(HalamanKeamanan.this);
-//
-//                //setting custom layout to dialog
-//                dialog.setContentView(R.layout.custom_dialog);
-////                dialog.setTitle("Custom Dialog");
-//
-//                //adding text dynamically
-////                TextView txt = (TextView) dialog.findViewById(R.id.textView);
-////                txt.setText("Put your dialog text here.");
-//
-////                ImageView image = (ImageView)dialog.findViewById(R.id.image);
-////                image.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_info));
-//
-//                //adding button click event
-////                Button dismissButton = (Button) dialog.findViewById(R.id.button);
-//                ImageView image = (ImageView)dialog.findViewById(R.id.tombol_cancel);
-//                image.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
-//
-//            }
-//        });
-
     }
 
     public void getJSONFromUrl(String url) {
@@ -179,35 +146,7 @@ public class HalamanKeamanan extends FragmentActivity {
                 }
             }
         }
-
         return sb.toString();
-    }
-
-    public String getJSON(String address){
-        StringBuilder builder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(address);
-        try{
-            HttpResponse response = client.execute(httpGet);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if(statusCode == 200){
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while((line = reader.readLine()) != null){
-                    builder.append(line);
-                }
-            } else {
-                Log.e(HalamanKeamanan.class.toString(), "Failedet JSON object");
-            }
-        }catch(ClientProtocolException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return builder.toString();
     }
 
     private class Async extends AsyncTask<String, Integer, Double>

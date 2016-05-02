@@ -16,10 +16,11 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="121dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:background="@color/header"
-            android:layout_weight="0.73">
+            android:layout_weight="0.73"
+            android:elevation="10dp">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -38,14 +39,15 @@
                         android:layout_gravity="center"
                         android:hint="Lokasi lain..."
                         android:textAlignment="center"
-                        android:textColor="#eeeeee">
+                        android:textColor="#eeeeee"
+                        android:imeOptions="actionDone">
                     </AutoCompleteTextView>
                 </ScrollView>
 
 
                 <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="..."
                     android:id="@+id/lokasi_sekarang"
@@ -54,12 +56,14 @@
                     android:textSize="20dp"
                     android:layout_marginTop="10dp"/>
 
-                <!--<Button-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Find Me"-->
-                    <!--android:id="@+id/button_location"-->
-                    <!--android:layout_gravity="center" />-->
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Refresh"
+                    android:id="@+id/button_location"
+                    android:layout_gravity="center"
+                    android:background="@color/common_signin_btn_default_background"
+                    android:layout_marginTop="10dp" />
             </LinearLayout>
 
         </LinearLayout>

@@ -56,7 +56,7 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
 
     @Override
     public void onBindViewHolder(View_Holder holder, int position) {
-        holder.textview_nama.setText(list.get(position).getName());
+        holder.textview_nama.setText(list.get(position).getName().toLowerCase());
         holder.textview_alamat.setText(list.get(position).getVicinity());
         holder.container.setOnClickListener(onClickListener(holder, position));
     }

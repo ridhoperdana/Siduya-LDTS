@@ -23,8 +23,6 @@ import java.util.List;
  * Created by RIDHO on 4/23/2016.
  */
 public class PlaceAPI {
-
-
     net.ridhoperdana.siduya.Address request;
     public List<Predictions> tampung_result = new ArrayList<>();
     public ArrayList<String> resultList;
@@ -37,6 +35,8 @@ public class PlaceAPI {
             url = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
             url.append("input=" + URLEncoder.encode(input, "utf8"));
             url.append("&types=" + "address");
+            url.append("&location=" + "-7.25747,112.75209");
+            url.append("&radius=" + 50000);
             url.append("&language=" + "id");
             url.append("&key=" + "AIzaSyBVuRYeAWRZhzeF9c51pOUfAC93iP7FgBE");
             // defaultHttpClient
@@ -47,16 +47,12 @@ public class PlaceAPI {
             Reader reader = new InputStreamReader(httpResponse.getEntity().getContent(), "UTF-8");
             Gson baru = new Gson();
 
-//            Log.d("isi request-->", getStringFromInputStream(reader).toString());
             request = baru.fromJson(reader, net.ridhoperdana.siduya.Address.class);
-//            Log.d("list->", request.)
 
             resultList = new ArrayList<String>(request.getPredictions().size());
             for(int i=0; i<request.getPredictions().size(); i++)
             {
-//                tampung_result.add(request.getPredictions().get(i));
                 resultList.add(request.getPredictions().get(i).getDescription());
-//                Log.d("List Predict->", request.getPredictions().get(i).getDescription().toString());
             }
 
         } catch (UnsupportedEncodingException e) {

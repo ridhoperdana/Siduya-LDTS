@@ -27,14 +27,11 @@ import java.util.List;
 public class PlaceAdapter extends ArrayAdapter<String> implements Filterable{
 
     private ArrayList<String> resultList;
-//    private Filter filter;
 
     Context mContext;
     int mResource;
 
     PlaceAPI mPlaceAPI = new PlaceAPI();
-
-//    PlaceAPI mPlaceAPI = new PlaceAPI();
 
     public PlaceAdapter(Context context, int resource) {
         super(context, resource);
@@ -58,13 +55,10 @@ public class PlaceAdapter extends ArrayAdapter<String> implements Filterable{
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
-//                resultList = new ArrayList<String>()
                 if (constraint != null) {
                     resultList = mPlaceAPI.autocomplete(constraint.toString());
-//                    Log.d("result list->", resultList.toString());
 
                     filterResults.values = resultList;
-//                    Log.d("filter list->", filterResults.values.toString());
                     filterResults.count = resultList.size();
                 }
 
@@ -81,7 +75,6 @@ public class PlaceAdapter extends ArrayAdapter<String> implements Filterable{
                 }
             }
         };
-
         return filter;
     }
 }

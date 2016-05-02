@@ -60,7 +60,7 @@ public class HalamanKesehatan extends AppCompatActivity {
         kategori = getIntent().getStringExtra("kategori");
 
         try {
-            url_baru = URLEncoder.encode("hospital", "UTF-8");
+            url_baru = URLEncoder.encode("hospital|doctor", "UTF-8");
             latutf = URLEncoder.encode(lat_depan.toString(), "UTF-8");
             longtutf = URLEncoder.encode(longt_depan.toString(), "UTF-8");
             radiusutf = URLEncoder.encode("5000", "UTF-8");
@@ -134,35 +134,7 @@ public class HalamanKesehatan extends AppCompatActivity {
                 }
             }
         }
-
         return sb.toString();
-    }
-
-    public String getJSON(String address){
-        StringBuilder builder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(address);
-        try{
-            HttpResponse response = client.execute(httpGet);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if(statusCode == 200){
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while((line = reader.readLine()) != null){
-                    builder.append(line);
-                }
-            } else {
-                Log.e(HalamanKeamanan.class.toString(), "Failedet JSON object");
-            }
-        }catch(ClientProtocolException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return builder.toString();
     }
 
     private class Async extends AsyncTask<String, Integer, Double>

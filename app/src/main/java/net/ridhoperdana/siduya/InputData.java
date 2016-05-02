@@ -56,7 +56,7 @@ public class InputData extends AppCompatActivity {
         alamat = getIntent().getExtras().getString("value_alamat");
         kategori = getIntent().getExtras().getString("value_kategori");
 
-        nama_tempat = (EditText)findViewById(R.id.input_nama_tempat);
+//        nama_tempat = (EditText)findViewById(R.id.input_nama_tempat);
 
         try {
             namautf = URLDecoder.decode(nama, "UTF-8");
@@ -67,33 +67,19 @@ public class InputData extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
-        nama_tempat.setText(namautf);
-
-        alamat_tempat = (EditText)findViewById(R.id.input_alamat_tempat);
-        alamat_tempat.setText(alamatutf);
-
-        kategori_tempat = (EditText)findViewById(R.id.input_kategori_tempat);
-        kategori_tempat.setText(kategori);
+//        nama_tempat.setText(namautf);
+//
+//        alamat_tempat = (EditText)findViewById(R.id.input_alamat_tempat);
+//        alamat_tempat.setText(alamatutf);
+//
+//        kategori_tempat = (EditText)findViewById(R.id.input_kategori_tempat);
+//        kategori_tempat.setText(kategori);
 
         nomor_tempat = (EditText)findViewById(R.id.input_nomor_tempat);
         nomor_tempat.getText().toString();
 
         tombol = (Button)findViewById(R.id.tombol_unggah);
 
-//        tombol.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new Async().execute("http://ldts.cangkruk.info/public/uploaddata/"
-//                        + kategori_tempat.getText().toString() + "/"
-//                        + namautfpersen + "/"
-//                        + alamatutfpersen + "/"
-//                        + nomor_tempat.getText().toString() + "/"
-//                        + latitude.toString() + "/"
-//                        + longitude.toString());
-//            }
-//        });
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +98,7 @@ public class InputData extends AppCompatActivity {
             HttpPost httpGet = new HttpPost(url);
 
             postParameters = new ArrayList<NameValuePair>();
-            postParameters.add(new BasicNameValuePair("kategori", kategori_tempat.getText().toString()));
+            postParameters.add(new BasicNameValuePair("kategori", kategori));
             postParameters.add(new BasicNameValuePair("namalayanan", namautf));
             postParameters.add(new BasicNameValuePair("alamat", alamatutf));
             postParameters.add(new BasicNameValuePair("notelpon", nomor_tempat.getText().toString()));
@@ -128,7 +114,7 @@ public class InputData extends AppCompatActivity {
             responsecode = getStringFromInputStream(reader);
             if(responsecode=="sukses")
             {
-                Log.d("Data sukses dimasukkan", responsecode);
+                Log.d("sukses dimasukkan", responsecode);
             }
             else {
                 Log.d("ini response codenya-->", responsecode);
@@ -136,15 +122,6 @@ public class InputData extends AppCompatActivity {
                 Log.d("ini url parameter-->", url);
                 Log.d("parameter-->", postParameters.toString());
             }
-//            Gson baru = new Gson();
-//            request = baru.fromJson(reader, Tempat.class);
-//            Log.d("list->", request.)
-
-//            for(int i=0; i<request.getResults().size(); i++)
-//            {
-//                tampung_result.add(request.getResults().get(i));
-//                Log.d("List Nama->", tampung_result.get(i).getName());
-//            }
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
