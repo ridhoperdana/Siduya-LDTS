@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class HalamanDepan extends Activity implements LocationListener {
+public class HalamanDepan extends Activity{
 
     private static final int MY_FINE_ACCESS = 123;
     private static final String[] INITIAL_PERMS = {
@@ -230,12 +230,29 @@ public class HalamanDepan extends Activity implements LocationListener {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (mLastLocation == null){
-            mLastLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//        mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        if (mLastLocation == null){
+//            mLastLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//        }
+//        if (mLastLocation != null)
+//            Log.d("Location : ","Lat = "+ mLastLocation.getLatitude() + " Lng");
+        try{
+            mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (mLastLocation == null){
+                mLastLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if(mLastLocation==null)
+                {
+                    manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
+                    mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                }
+            }
+            else if (mLastLocation != null)
+                Log.d("Location : ","Lat = "+ mLastLocation.getLatitude() + " Lng");
+//                return;
+        }catch (Exception e)
+        {
+            Log.d("Gagal lokasi terbaru", "fail");
         }
-        if (mLastLocation != null)
-            Log.d("Location : ","Lat = "+ mLastLocation.getLatitude() + " Lng");
     }
 
     private void buildAlertMessageNoGps() {
@@ -257,14 +274,32 @@ public class HalamanDepan extends Activity implements LocationListener {
     }
 
     private int getAddress() throws IOException {
-        geocoder = new Geocoder(this, Locale.getDefault());
+//        geocoder = new Geocoder(this, Locale.getDefault());
+//
+//        addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+//
+//        lat = mLastLocation.getLatitude();
+//        longt = mLastLocation.getLongitude();
+//
+//        Alamat = addresses.get(0).getAddressLine(0);
+////        String city = addresses.get(0).getLocality();
+////        String state = addresses.get(0).getAdminArea();
+////        String country = addresses.get(0).getCountryName();
+////        String postalCode = addresses.get(0).getPostalCode();
+////        String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+////        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
+////        lokasi_saya.setText(Alamat);
+//        Alamat_saatini = Alamat;
+//        return 1;
+        try{
+            geocoder = new Geocoder(this, Locale.getDefault());
 
-        addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-        lat = mLastLocation.getLatitude();
-        longt = mLastLocation.getLongitude();
+            lat = mLastLocation.getLatitude();
+            longt = mLastLocation.getLongitude();
 
-        Alamat = addresses.get(0).getAddressLine(0);
+            Alamat = addresses.get(0).getAddressLine(0);
 //        String city = addresses.get(0).getLocality();
 //        String state = addresses.get(0).getAdminArea();
 //        String country = addresses.get(0).getCountryName();
@@ -272,8 +307,13 @@ public class HalamanDepan extends Activity implements LocationListener {
 //        String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
 //        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
 //        lokasi_saya.setText(Alamat);
-        Alamat_saatini = Alamat;
-        return 1;
+            Alamat_saatini = Alamat;
+            return 1;
+        }catch (Exception e)
+        {
+            Log.d("Gagal dapat address", "fail");
+            return 2;
+        }
     }
 
     @Override
@@ -281,46 +321,59 @@ public class HalamanDepan extends Activity implements LocationListener {
         super.onResume();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        lat = location.getLatitude();
-        longt = location.getLongitude();
-        geocoder_baru = new Geocoder(this, Locale.getDefault());
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        lat = location.getLatitude();
+//        longt = location.getLongitude();
+//        geocoder_baru = new Geocoder(this, Locale.getDefault());
+//
+//        try {
+//            addresses_baru = geocoder.getFromLocation(lat, longt, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Alamat = addresses.get(0).getAddressLine(0);
+//        Alamat_saatini = Alamat;
+////        if(Alamat_saatini!=null)
+//        lokasi_saya.setText(Alamat_saatini);
+//        flag_lokasi = 1;
+////        Alamat_saatini = null;
+//    }
 
-        try {
-            addresses_baru = geocoder.getFromLocation(lat, longt, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Alamat = addresses.get(0).getAddressLine(0);
-        Alamat_saatini = Alamat;
-//        if(Alamat_saatini!=null)
-        lokasi_saya.setText(Alamat_saatini);
-        flag_lokasi = 1;
-//        Alamat_saatini = null;
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
 
     private class Async extends AsyncTask<String, Integer, Double>
     {
         @Override
         protected Double doInBackground(String... params) {
 //            return null;
-            getLocation();
+//            getLocation();
+//            try {
+//                getAddress();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            try{
+                getLocation();
+            }catch (Exception e)
+            {
+                Log.d("GPS blm nyala", "fail");
+                return null;
+            }
+
             try {
                 getAddress();
             } catch (IOException e) {
@@ -333,9 +386,18 @@ public class HalamanDepan extends Activity implements LocationListener {
         protected void onPostExecute(Double aDouble) {
             super.onPostExecute(aDouble);
 
-            lokasi_saya.setText(Alamat);
-            Log.d("Alamat auto-->", Alamat);
-            dialog.hide();
+//            lokasi_saya.setText(Alamat);
+//            Log.d("Alamat auto-->", Alamat);
+//            dialog.hide();
+            try {
+                lokasi_saya.setText(Alamat);
+                Log.d("Alamat auto-->", Alamat);
+                dialog.hide();
+            }catch (Exception e)
+            {
+                Log.d("Gagal GPS / lokasi", "fail");
+                getLocation();
+            }
         }
 
         @Override
