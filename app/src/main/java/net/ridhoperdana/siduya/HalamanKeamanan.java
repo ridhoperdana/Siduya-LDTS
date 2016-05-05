@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -74,7 +75,13 @@ public class HalamanKeamanan extends FragmentActivity {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        try{
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP)
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }catch (Exception e)
+        {
+            Log.d("Version", "kurang");
+        }
         setContentView(R.layout.activity_halaman_keamanan);
 
         dialog = new ProgressDialog(this);

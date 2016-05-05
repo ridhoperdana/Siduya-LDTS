@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class HalamanDepan extends Activity{
+public class HalamanDepan extends Activity {
 
     private static final int MY_FINE_ACCESS = 123;
     private static final String[] INITIAL_PERMS = {
@@ -58,8 +58,8 @@ public class HalamanDepan extends Activity{
     String address = "";
     private LocationManager manager, manager_now;
     private LocationListener locationListener;
-    private double lat;
-    private double longt;
+    private Double lat;
+    private Double longt;
     private Location loca;
     private Context mContext;
     Button button;
@@ -90,7 +90,13 @@ public class HalamanDepan extends Activity{
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+        } catch (Exception e) {
+            Log.d("Version", "kurang");
+        }
+
 
         setContentView(R.layout.activity_halaman_depan);
 
@@ -114,7 +120,7 @@ public class HalamanDepan extends Activity{
 
         new Async().execute("go");
 
-        auto = (AutoCompleteTextView)findViewById(R.id.input_cari);
+        auto = (AutoCompleteTextView) findViewById(R.id.input_cari);
         auto.setAdapter(new PlaceAdapter(this, R.layout.autocomplete));
         auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -136,41 +142,7 @@ public class HalamanDepan extends Activity{
         SendNewIntent();
     }
 
-    private class Refresh implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-//            manager_now = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                // TODO: Consider calling
-//                return;
-//            }
-//            manager_now.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, HalamanDepan.this);
-////                getLocation();
-//            //                    getAddress();
-//            dialog.setMessage("Sedang merefresh lokasi..");
-//            dialog.setCancelable(false);
-//            dialog.show();
-//            Log.d("flag_lokasi->", String.valueOf(flag_lokasi));
-//            if(flag_lokasi==1 && (lat == mLastLocation.getLatitude() || longt == mLastLocation.getLongitude()))
-//            {
-//                dialog.hide();
-//            }
-//            else if(Alamat_saatini!=null && flag_lokasi==0)
-//            {
-//                Log.d("masuk alamat saat ini", Alamat_saatini);
-//                lokasi_saya.setText(Alamat_saatini);
-//                Log.d("ini text sekarang->", lokasi_saya.getText().toString());
-//                dialog.hide();
-//            }
-//            Log.d("Alamat refresh-->", Alamat_saatini);
-//            //                new Async().execute("go1");
-
-        }
-    }
-
-    private void SendNewIntent()
-    {
+    private void SendNewIntent() {
         Log.d("masuk flag", "-->0");
         cardKeamanan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,39 +191,82 @@ public class HalamanDepan extends Activity{
         });
     }
 
-    private void getLocation()
-    {
+    private void getLocation() {
         manager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            buildAlertMessageNoGps();
+        try {
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                buildAlertMessageNoGps();
+            }
+        } catch (Exception e) {
+            Log.d("gps blm nyala", "payah");
+            return;
         }
+
 
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-//        mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//        if (mLastLocation == null){
-//            mLastLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//        }
-//        if (mLastLocation != null)
-//            Log.d("Location : ","Lat = "+ mLastLocation.getLatitude() + " Lng");
-        try{
-            mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (mLastLocation == null){
-                mLastLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                if(mLastLocation==null)
-                {
-                    manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
-                    mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Log.d("ini lokasi", "gps");
+        if (mLastLocation == null) {
+            mLastLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Log.d("ini lokasi", "network");
+            if (mLastLocation == null) {
+//                    manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
+                mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Log.d("ini lokasi", "pindah tempat");
+                if (mLastLocation == null) {
+                    Log.d("gak dapet", "mLoc");
+                    return;
                 }
             }
-            else if (mLastLocation != null)
-                Log.d("Location : ","Lat = "+ mLastLocation.getLatitude() + " Lng");
+        } else if (mLastLocation != null)
+            Log.d("Location : ", "Lat = " + mLastLocation.getLatitude() + " Lng");
 //                return;
-        }catch (Exception e)
-        {
-            Log.d("Gagal lokasi terbaru", "fail");
+//        }catch (Exception e)
+//        {
+//            Log.d("Gagal lokasi terbaru", "fail");
+//        }
+    }
+
+    private void requestLocation() {
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    lat = location.getLatitude();
+                    longt = location.getLongitude();
+                    Log.d("masuk location", "listener");
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+        } catch (Exception e) {
+            Log.d("gagal request", "location");
         }
     }
 
@@ -269,32 +284,35 @@ public class HalamanDepan extends Activity{
                         dialog.cancel();
                     }
                 });
+//                finish();
         final AlertDialog alert = builder.create();
         alert.show();
+//        finish();
     }
 
     private int getAddress() throws IOException {
-//        geocoder = new Geocoder(this, Locale.getDefault());
-//
-//        addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-//
-//        lat = mLastLocation.getLatitude();
-//        longt = mLastLocation.getLongitude();
-//
-//        Alamat = addresses.get(0).getAddressLine(0);
-////        String city = addresses.get(0).getLocality();
-////        String state = addresses.get(0).getAdminArea();
-////        String country = addresses.get(0).getCountryName();
-////        String postalCode = addresses.get(0).getPostalCode();
-////        String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
-////        lokasi_saya = (TextView)findViewById(R.id.lokasi_sekarang);
-////        lokasi_saya.setText(Alamat);
-//        Alamat_saatini = Alamat;
-//        return 1;
+        try{
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                buildAlertMessageNoGps();
+            }
+        }catch (Exception e)
+        {
+            Log.d("gps blm nyala", "payah address");
+            return 4;
+        }
         try{
             geocoder = new Geocoder(this, Locale.getDefault());
 
-            addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            if(lat!=null && longt!=null)
+            {
+                addresses = geocoder.getFromLocation(lat, longt, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                Log.d("masuk lokasi", "baru");
+            }
+            else
+                {
+                    addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    Log.d("tidak masuk", "lokasi baru");
+                }
 
             lat = mLastLocation.getLatitude();
             longt = mLastLocation.getLongitude();
@@ -309,7 +327,7 @@ public class HalamanDepan extends Activity{
 //        lokasi_saya.setText(Alamat);
             Alamat_saatini = Alamat;
             return 1;
-        }catch (Exception e)
+        } catch (Exception e)
         {
             Log.d("Gagal dapat address", "fail");
             return 2;
@@ -321,58 +339,17 @@ public class HalamanDepan extends Activity{
         super.onResume();
     }
 
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        lat = location.getLatitude();
-//        longt = location.getLongitude();
-//        geocoder_baru = new Geocoder(this, Locale.getDefault());
-//
-//        try {
-//            addresses_baru = geocoder.getFromLocation(lat, longt, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Alamat = addresses.get(0).getAddressLine(0);
-//        Alamat_saatini = Alamat;
-////        if(Alamat_saatini!=null)
-//        lokasi_saya.setText(Alamat_saatini);
-//        flag_lokasi = 1;
-////        Alamat_saatini = null;
-//    }
-
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderEnabled(String provider) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//
-//    }
-
     private class Async extends AsyncTask<String, Integer, Double>
     {
         @Override
         protected Double doInBackground(String... params) {
-//            return null;
-//            getLocation();
-//            try {
-//                getAddress();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            try{
+//            try{
                 getLocation();
-            }catch (Exception e)
-            {
-                Log.d("GPS blm nyala", "fail");
-                return null;
-            }
+//            }catch (Exception e)
+//            {
+//                Log.d("GPS blm nyala", "fail");
+//                return null;
+//            }
 
             try {
                 getAddress();
@@ -385,10 +362,6 @@ public class HalamanDepan extends Activity{
         @Override
         protected void onPostExecute(Double aDouble) {
             super.onPostExecute(aDouble);
-
-//            lokasi_saya.setText(Alamat);
-//            Log.d("Alamat auto-->", Alamat);
-//            dialog.hide();
             try {
                 lokasi_saya.setText(Alamat);
                 Log.d("Alamat auto-->", Alamat);
@@ -396,7 +369,36 @@ public class HalamanDepan extends Activity{
             }catch (Exception e)
             {
                 Log.d("Gagal GPS / lokasi", "fail");
+//
+//                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                    buildAlertMessageNoGps();
+//                }
                 getLocation();
+                requestLocation();
+                try {
+                    getAddress();
+                    Log.d("get lokasi","baru post");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+//                finish();
+//                lokasi_saya.setText(Alamat);
+//                try{
+//                    Log.d("Alamat auto-->", Alamat);
+//                }catch (Exception a)
+//                {
+//                    Log.d("Alamat", "kosong");
+//                }
+//
+//                dialog.hide();
+//                try{
+//                    lokasi_saya.setText(Alamat);
+//                    Log.d("Alamat auto-->", Alamat);
+//                    dialog.hide();
+//                }catch (Exception ex)
+//                {
+//                    Log.d("gagal set lokasi", "Post");
+//                }
             }
         }
 
