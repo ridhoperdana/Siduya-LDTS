@@ -83,7 +83,7 @@ public class InputData extends AppCompatActivity {
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Async().execute("http://ldts.cangkruk.info/public/uploaddata");
+                new Async().execute("http://cangkruk.info/ldts/public/uploaddata");
             }
         });
     }

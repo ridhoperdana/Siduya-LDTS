@@ -2,6 +2,7 @@ package net.ridhoperdana.siduya;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -30,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
@@ -191,21 +194,21 @@ public class HalamanDepan extends Activity {
         });
     }
 
-    private void getLocation() {
+    private int getLocation() {
         manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        try {
-            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                buildAlertMessageNoGps();
-            }
-        } catch (Exception e) {
-            Log.d("gps blm nyala", "payah");
-            return;
-        }
+//
+//        try {
+//            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                buildAlertMessageNoGps();
+//            }
+//        } catch (Exception e) {
+//            Log.d("gps blm nyala", "payah");
+//            return;
+//        }
 
 
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+            return 1;
         }
         mLastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Log.d("ini lokasi", "gps");
@@ -218,16 +221,21 @@ public class HalamanDepan extends Activity {
                 Log.d("ini lokasi", "pindah tempat");
                 if (mLastLocation == null) {
                     Log.d("gak dapet", "mLoc");
-                    return;
+                    return 1;
                 }
             }
         } else if (mLastLocation != null)
+        {
             Log.d("Location : ", "Lat = " + mLastLocation.getLatitude() + " Lng");
+            return 0;
+        }
+
 //                return;
 //        }catch (Exception e)
 //        {
 //            Log.d("Gagal lokasi terbaru", "fail");
 //        }
+        return 0;
     }
 
     private void requestLocation() {
@@ -242,7 +250,7 @@ public class HalamanDepan extends Activity {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 60000, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lat = location.getLatitude();
@@ -286,6 +294,7 @@ public class HalamanDepan extends Activity {
                 });
 //                finish();
         final AlertDialog alert = builder.create();
+        dialog.hide();
         alert.show();
 //        finish();
     }
@@ -337,6 +346,14 @@ public class HalamanDepan extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+//        try {
+//            getAddress();
+//            lokasi_saya.setText(Alamat);
+//            Log.d("Alamat auto-->", Alamat);
+//            dialog.hide();
+//        } catch (Exception e) {
+//            Toast.makeText(getApplicationContext(), "Gagal dapat lokasi dari resume", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private class Async extends AsyncTask<String, Integer, Double>
@@ -344,17 +361,29 @@ public class HalamanDepan extends Activity {
         @Override
         protected Double doInBackground(String... params) {
 //            try{
-                getLocation();
+                Integer lokasi = getLocation();
 //            }catch (Exception e)
 //            {
 //                Log.d("GPS blm nyala", "fail");
 //                return null;
 //            }
-
-            try {
-                getAddress();
-            } catch (IOException e) {
-                e.printStackTrace();
+            Log.d("lokasi =>", lokasi.toString());
+            if(lokasi!=1)
+            {
+                try {
+                    getAddress();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                getLocation();
+                try {
+                    getAddress();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return null;
         }
@@ -368,6 +397,7 @@ public class HalamanDepan extends Activity {
                 dialog.hide();
             }catch (Exception e)
             {
+
                 Log.d("Gagal GPS / lokasi", "fail");
 //
 //                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -381,6 +411,7 @@ public class HalamanDepan extends Activity {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+                timerDelayRemoveDialog(5000, dialog);
 //                finish();
 //                lokasi_saya.setText(Alamat);
 //                try{
@@ -406,9 +437,18 @@ public class HalamanDepan extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog.setMessage("Sedang mencari lokasi...");
-            dialog.setCancelable(false);
+            dialog.setCancelable(true);
             dialog.show();
         }
+    }
+
+    public void timerDelayRemoveDialog(long time, final Dialog d){
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                d.dismiss();
+                Toast.makeText(getApplicationContext(), "Gagal mendapat lokasi, harap tekan refresh", Toast.LENGTH_SHORT).show();
+            }
+        }, time);
     }
 
     public void getJSONFromUrl(String url) {

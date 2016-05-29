@@ -7,7 +7,6 @@ import android.location.*;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
@@ -44,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DialogActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+public class DialogDetilLayanan extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
@@ -105,7 +103,7 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
             e.printStackTrace();
         }
 
-        url_telepon = "http://ldts.cangkruk.info/public/notelpon/" + namautf;
+        url_telepon = "http://cangkruk.info/ldts/public/notelpon/" + namautf;
 
         viewNama = (TextView)findViewById(R.id.nama_tempat);
         viewAlamat = (TextView)findViewById(R.id.alamat_tempat);
@@ -290,14 +288,21 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
         @Override
         protected void onPostExecute(Double aDouble) {
             super.onPostExecute(aDouble);
-            if(request.length==0)
+            try{
+                if(request.length==0)
+                {
+                    viewTelepon.setText("Tidak tersedia. Tambahkan?");
+                }
+                else
+                {
+                    viewTelepon.setText(request[0].getNotelpon());
+                }
+            }catch (Exception e)
             {
-                viewTelepon.setText("Tidak tersedia. Tambahkan?");
+                Toast.makeText(getApplicationContext(), "Service sedang di-nonaktifkan, silahkan cobalagi nanti.", Toast.LENGTH_SHORT).show();
             }
-            else
-            {
-                viewTelepon.setText(request[0].getNotelpon());
-            }
+
+
 //            super.isCancelled();
             if(viewTelepon.getText().toString().equals("Tidak tersedia. Tambahkan?"))
             {
@@ -313,8 +318,8 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
             tombol_tambah.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent_inputdata = new Intent(DialogActivity.this, InputData.class);
-//                Intent i  = new Intent(context, DialogActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Intent intent_inputdata = new Intent(DialogDetilLayanan.this, InputData.class);
+//                Intent i  = new Intent(context, DialogDetilLayanan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent_inputdata.putExtra("value_nama", namautf);
                     intent_inputdata.putExtra("value_alamat", alamatutf);
                     intent_inputdata.putExtra("value_lat", lat);
@@ -346,7 +351,7 @@ public class DialogActivity extends AppCompatActivity implements GoogleApiClient
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            viewTelepon.setText("...");
+            viewTelepon.setText("Tunggu sebentar..");
         }
     }
 }

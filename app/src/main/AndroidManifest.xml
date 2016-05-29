@@ -42,7 +42,7 @@
             android:label="@string/title_activity_halaman_kesehatan"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DialogActivity"
+            android:name=".DialogDetilLayanan"
             android:theme="@style/Theme.MyDialog" />
 
         <meta-data

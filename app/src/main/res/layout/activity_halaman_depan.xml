@@ -16,10 +16,9 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="@dimen/height_judul"
             android:layout_gravity="center"
             android:background="@color/header"
-            android:layout_weight="0.73"
             android:elevation="10dp">
 
             <LinearLayout
@@ -37,7 +36,7 @@
                         android:layout_height="match_parent"
                         android:id="@+id/input_cari"
                         android:layout_gravity="center"
-                        android:hint="Lokasi lain..."
+                        android:hint="Masukkan lokasi lain..."
                         android:textAlignment="center"
                         android:textColor="#eeeeee"
                         android:imeOptions="actionDone">
@@ -76,7 +75,7 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
 
                     <!--<fragment-->
@@ -177,6 +176,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:layout_marginBottom="15dp"
                         android:id="@+id/card_transportasi">
 
                         <FrameLayout

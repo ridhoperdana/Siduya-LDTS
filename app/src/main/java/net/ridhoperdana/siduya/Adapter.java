@@ -1,27 +1,17 @@
 package net.ridhoperdana.siduya;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.MapFragment;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,7 +72,7 @@ public class Adapter extends RecyclerView.Adapter<View_Holder> {
 
                 Double longt = list.get(position).getGeometry().getLocation().getLng();
 
-                Intent i  = new Intent(context, DialogActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent i  = new Intent(context, DialogDetilLayanan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("value_lat", lat);
                 i.putExtra("value_longt", longt);
                 i.putExtra("value_nama", nama);
