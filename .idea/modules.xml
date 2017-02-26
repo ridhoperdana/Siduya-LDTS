@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Siduya-LDTS.iml" filepath="$PROJECT_DIR$/Siduya-LDTS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Siduya.iml" filepath="$PROJECT_DIR$/Siduya.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
